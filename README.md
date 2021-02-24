@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Laravel Boilerplate (Current: Laravel 8.*) ([Demo](https://demo.laravel-boilerplate.com))
 
 [![Latest Stable Version](https://poser.pugx.org/rappasoft/laravel-boilerplate/v/stable)](https://packagist.org/packages/rappasoft/laravel-boilerplate)
@@ -48,3 +49,6 @@ If you would like to help the continued efforts of this project, any size [donat
 ### License
 
 MIT: [http://anthony.mit-license.org](http://anthony.mit-license.org)
+=======
+# Laravel-boilerplate
+>>>>>>> 3677d348136627db1c077c7f105628ebd75c2acd
