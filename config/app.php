@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://securedevelopementserver.com/laravel-boilerplate-master/public'),
+    'url' => env('APP_URL', 'http://localhost/laravel-boilerplate-master/public'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -179,6 +179,8 @@ return [
         App\Providers\LocaleServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class
+
         // Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
@@ -232,7 +234,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

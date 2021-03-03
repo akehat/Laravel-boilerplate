@@ -10,7 +10,9 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Campaigns;
 use App\Models\Donations;
 use Spatie\QueryBuilder\QueryBuilderRequest;
-// use Maatwebsite\Excel\Facades\Excel;
+use Rappasoft\LaravelLivewireTables\Exports\Export;
+
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Class UsersTable.
@@ -22,7 +24,10 @@ class DonationsTable extends TableComponent
     /**
      * @var string
      */
+
     public $sortField = 'cause_name';
+
+    public $cause_id;
 
     /**
      * @var string
@@ -33,9 +38,7 @@ class DonationsTable extends TableComponent
      * @var array
      */
 
-    public $exports = ['csv', 'xls'];
-
-    public $exportFileName = 'users-table.csv';
+   
 
     protected $options = [
         'bootstrap.container' => false,
@@ -45,20 +48,22 @@ class DonationsTable extends TableComponent
     /**
      * @param  string  $status
      */
-    public function mount($status = 'active'): void
+    public function mount($status = 'active',$cid=''): void
     {
         $this->status = $status;
-    }
+        $this->cause_id = $cid;
+     }
 
     /**
      * @return Builder
      */
     public function query(): Builder
     {
-       return Donations::query();
-        
+         return Donations::query()
+        ->where('cause_id','=',$this->cause_id);
+  
 
-    
+       // return Donations::query();
     }
 
     /**
@@ -68,42 +73,16 @@ class DonationsTable extends TableComponent
     {
         return [
             
-            Column::make(__('Name'), 'cause_name')
-                ->searchable()
-                ->sortable(),
-            Column::make(__('SLug'), 'cause_slug')
-                ->searchable()
-                ->sortable(),
-            Column::make(__('Subdomain'), 'subdomain')
-                ->searchable()
-                ->sortable(),
-            Column::make(__('Cause ID'), 'cause_id')
-                ->searchable()
-                ->sortable(),
-            // Column::make(__('Donor First Name'), 'donor_first_name')
-            //     ->searchable()
-            //     ->sortable(),
-                
-            // Column::make(__('Donor Last Name'), 'donor_last_name')
-            //     ->searchable()
-            //     ->sortable(),   
-            // Column::make(__('Donor Email'), 'donor_email')
-            //     ->searchable()
-            //     ->sortable(), 
-            Column::make(__('Amount'), 'amount')
-                ->searchable()
-                ->sortable(),  
-            Column::make(__('Status'), 'status')
-                ->searchable()
-                ->sortable(),           
+            Column::make(__('Name'), 'cause_name')->searchable()->sortable(),
+            Column::make(__('Slug'), 'cause_slug')->searchable()->sortable(),
+            Column::make(__('Subdomain'), 'subdomain')->exportOnly(),
+            Column::make(__('Cause ID'), 'cause_id')->exportOnly(),
+            Column::make(__('Name'), 'donor_full_name')->searchable()->sortable(),
+            Column::make(__('Donor Email'), 'donor_email')->searchable()->sortable(),
+            Column::make(__('Amount'), 'amount')->searchable()->sortable(),  
+            Column::make(__('Status'), 'status')->searchable()->sortable(),           
             
         ];
     }
 
-
-    public function exportOnly()
-    {
-        // die('iam here');
-        // return Storage::disk('exports')->download('export.csv');
-    }
 }

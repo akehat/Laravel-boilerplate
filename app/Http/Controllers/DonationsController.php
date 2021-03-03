@@ -11,8 +11,14 @@ class DonationsController extends Controller
 {
     public function index()
     {
+
     	$donations = Donations::all();
-    	// echo "<pre>";print_r($campaigns);die;
         return view('donations.donations');
+    }
+    public function show($id)
+    {
+      
+      return view('donations.show', compact('id')); 
+     
     }
 }

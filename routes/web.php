@@ -36,14 +36,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], f
     
 });
 Route::group(['middleware' => ['auth']], function() {
-   
+Route::patch('/campaigns-status/{campaigns}/{status}', [CampaignsController::class, 'status'])->name('admin.campaigns.status');
+Route::get('/campaigns-active', [CampaignsController::class, 'active'])->name('admin.campaigns.active');
+Route::get('/campaigns-archive', [CampaignsController::class, 'archive'])->name('admin.campaigns.archive');
  Route::get('/campaigns', [CampaignsController::class, 'index'])->name('admin.campaigns.index');
- Route::get('/donations', [DonationsController::class, 'index'])->name('admin.donations.index');
+ Route::get('/donations/{id}', [DonationsController::class, 'show'])->name('admin.donations.show');
 });
-
-
-// Route::get('/campaigns/{id}', [CampaignsController::class, 'edit'])->name('admin.auth.campaigns.edit');
-// Route::post('/campaigns/{id}',[CampaignsController::class, 'campaigns'])->name('admin.auth.campaigns.update');
-// Route::delete('/campaigns', [CampaignsController::class, 'destroy'])->name('admin.auth.campaigns.destroy');
-
-// Route::get('campaigns', [CampaignsController::class, 'index']);
