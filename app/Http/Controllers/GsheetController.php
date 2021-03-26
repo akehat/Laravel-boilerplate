@@ -122,6 +122,7 @@ class GsheetController extends Controller
 		            //     ->where('cause_id', $cause_id)
 		            //     ->update(['sheet_updated' => 1,'sheet_row' => $i]);
 
+
 	            	if(!$donationObj->sheet_row){
 	            		$donationObj->sheet_row = $i;
 	            		$donationObj->sheet_updated = 1;

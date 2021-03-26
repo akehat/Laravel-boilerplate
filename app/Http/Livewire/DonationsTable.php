@@ -40,6 +40,7 @@ class DonationsTable extends TableComponent
 
     public $exports = ['csv'];
 
+
     public $exportFileName = 'donations-table';
 
     protected $options = [

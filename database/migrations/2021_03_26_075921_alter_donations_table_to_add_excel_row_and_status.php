@@ -13,6 +13,7 @@ class AlterDonationsTableToAddExcelRowAndStatus extends Migration
      */
     public function up()
     {
+        
         Schema::table('donations', function (Blueprint $table) {
             $table->string('sheet_row')->nullable()->after('charge_id');
             $table->tinyInteger('sheet_updated')->nullable()->after('sheet_row')->default(0);

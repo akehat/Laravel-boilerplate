@@ -65,6 +65,7 @@ class DonationsController extends Controller
                
                 return response()->json(['donations' => $Donations, 'message' =>'Created successfully'], 201);
             
+            
             }else{  // campaigns exist
                 $campaigns = Campaigns::find($getCampaigns->id);
                 $campaigns->update($request->all()); // update campaign
