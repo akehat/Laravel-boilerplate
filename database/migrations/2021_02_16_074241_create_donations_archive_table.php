@@ -14,7 +14,7 @@ class CreateDonationsArchiveTable extends Migration
     public function up()
     {
         Schema::create('donations_archive', function (Blueprint $table) {
-            $table->integer('id')->unsigned();
+            $table->id();
             $table->string('subdomain',100);
             $table->string('cause_name',255);
             $table->string('cause_slug',255);
