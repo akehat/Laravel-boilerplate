@@ -38,7 +38,9 @@ class DonationsTable extends TableComponent
      * @var array
      */
 
-   
+    public $exports = ['csv'];
+
+    public $exportFileName = 'donations-table';
 
     protected $options = [
         'bootstrap.container' => false,
@@ -79,6 +81,28 @@ class DonationsTable extends TableComponent
             Column::make(__('Cause ID'), 'cause_id')->exportOnly(),
             Column::make(__('Name'), 'donor_full_name')->searchable()->sortable(),
             Column::make(__('Donor Email'), 'donor_email')->searchable()->sortable(),
+            Column::make(__('Donor Phone'), 'donor_phone')->exportOnly(), 
+            Column::make(__('Donor Street'), 'donor_street')->exportOnly(), 
+            Column::make(__('Donor City'), 'donor_city')->exportOnly(), 
+            Column::make(__('Donor State'), 'donor_state')->exportOnly(), 
+            Column::make(__('Donor Zip'), 'donor_zip')->exportOnly(), 
+            Column::make(__('Captured'), 'captured')->exportOnly(), 
+            Column::make(__('Currency'), 'currency')->exportOnly(), 
+            Column::make(__('Source'), 'source')->exportOnly(), 
+            Column::make(__('Anonymous'), 'anonymous')->exportOnly(), 
+            Column::make(__('Additional Info'), 'additional_info')->exportOnly(), 
+            Column::make(__('Team'), 'team')->exportOnly(), 
+            Column::make(__('Affiliate'), 'affiliate')->exportOnly(), 
+            Column::make(__('Converted Aamount'), 'converted_amount')->exportOnly(), 
+            Column::make(__('Converted Currency'), 'converted_currency')->exportOnly(), 
+            Column::make(__('Fee'), 'fee')->exportOnly(), 
+            Column::make(__('Fee Currency'), 'fee_currency')->exportOnly(), 
+            Column::make(__('Net'), 'net')->exportOnly(), 
+            Column::make(__('Net Currency'), 'net_currency')->exportOnly(), 
+            Column::make(__('Donor Dedication'), 'donor_dedication')->exportOnly(), 
+            Column::make(__('Charge Id'), 'charge_id')->exportOnly(),
+            Column::make(__('Created At'), 'created_at')->exportOnly(),
+            Column::make(__('Updated At'), 'updated_at')->exportOnly(),
             Column::make(__('Amount'), 'amount')->searchable()->sortable(),  
             Column::make(__('Status'), 'status')->searchable()->sortable(),           
             

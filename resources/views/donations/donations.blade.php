@@ -2,12 +2,12 @@
 
 @extends('backend.layouts.app')
 
-@section('title', __('Donations Management'))
+@section('title', __('Donations Managements'))
 
 @section('content')
     <x-backend.card>
         <x-slot name="header">
-            @lang('Donations Management')
+            @lang('Donations Managements')
         </x-slot>
 
       

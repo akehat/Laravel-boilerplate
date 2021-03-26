@@ -1,5 +1,5 @@
 <x-utils.link class="btn btn-info btn-sm" :href="route('admin.donations.show', $donations->cause_id)" :text="__('Donations')" />
-<a target="_blank" class="btn btn-info btn-sm" href="https://docs.google.com/spreadsheets/d/{{ $donations->google_sheet_id}}/edit#gid=0">Google Sheet</a>
+<a target="_blank" class="btn btn-info btn-sm" href="{{ $donations->google_sheet_url}}">Google Sheet</a>
 
 <button type="button"  <?php if($donations->status =='archived'){ ?> disabled <?php   } ?> <?php if ($donations->status == '2'){ ?> class="btn btn-warning btn-sm" <?php   } else {?> class="btn btn-info btn-sm" <?php } ?>data-toggle="modal" data-target="#exampleModal">
 	@if($donations->status == '2') {{ 'Archived' }} @else {{ 'Archive'}} @endif

@@ -10,6 +10,7 @@ use App\Models\Settings;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Log;
 class DonationsController extends Controller
 {
     /**
@@ -35,13 +36,16 @@ class DonationsController extends Controller
     public function store(Request $request)
     {
         $columns =  Schema::getColumnListing('donations');
-        // echo "<pre>";print_r($request->all());die;
+       
         $subdomain = $request->subdomain;
 
         // $check_subdomain = Settings::where('value', '=', $subdomain)->first();
         // if($check_subdomain != null){
 
             $data = $request->all();
+
+            Log::channel('customlog')->info(json_encode($data));
+
             $data['donor_full_name'] = $request->donor_first_name.' '.$request->donor_last_name;
             $validator = Validator::make($data, [
                 'subdomain' => 'required|max:255',
@@ -68,9 +72,14 @@ class DonationsController extends Controller
 
                 $getDonations=Donations::where('donation_id', '=',$request->donation_id)->first();
                 if ($getDonations === null) {
+
                     $donations = Donations::create($data);
                 }else{
                      $donations = Donations::find($getDonations->id);
+                     // $data['sheet_updated'] = 0; 
+                     $request->request->add(['sheet_updated' => 0]); 
+                     // $request->put('sheet_updated', 0);
+                    
                      $donations->update($request->all()); // update donations
                 }
                 $update_campaign_Tosheet =app('App\Http\Controllers\GsheetController')->updateGSheet($campaigns->google_sheet_id,$campaigns->cause_id,$columns);

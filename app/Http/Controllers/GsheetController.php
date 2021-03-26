@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Campaigns;
+use App\Models\Donations;
 use Google_Client;
 use DB;
 use Google_Service_Sheets;
@@ -17,22 +18,28 @@ class GsheetController extends Controller
 {
     public function getClient() {
     	$credentials = getenv( 'GOOGLE_APPLICATION_CREDENTIALS' );
-    	// echo "<pre>";print_r($credentials);die('fgf');
+    	
 
-	    $client = new Google_Client();
+	$client = new Google_Client();
+
+	// print_r(__DIR__);exit;
         putenv('GOOGLE_APPLICATION_CREDENTIALS='.__DIR__.'/credentials.json');
-	    // $client->setAuthConfig( getenv( 'GOOGLE_APPLICATION_CREDENTIALS' ) );
+        $credentials = getenv( 'GOOGLE_APPLICATION_CREDENTIALS' );
+
+       	// print_r(file_get_contents($credentials));exit;
+
+
+        // echo "<pre>";print_r($credentials);die('fgf');
+	// $client->setAuthConfig( getenv( 'GOOGLE_APPLICATION_CREDENTIALS' ) );
 	    $client->useApplicationDefaultCredentials();
 	    $client->setApplicationName('theName');
+	    //$client->setApplicationName('tcfapi');
 	    $client->setAccessType('offline');
 	    $client->setScopes(
-        ['https://www.googleapis.com/auth/spreadsheets',
-        'https://www.googleapis.com/auth/drive']);
-
-
-        return $client;
-
-    }
+	        ['https://www.googleapis.com/auth/spreadsheets',
+        	'https://www.googleapis.com/auth/drive']);
+	    return $client;
+ 	}
     
     public function addNewGsheet($data,$columns){
 
@@ -47,9 +54,13 @@ class GsheetController extends Controller
 	
         ]));
 		$newPermission = new Google_Service_Drive_Permission();
-	   // $newPermission->setEmailAddress("geetanjali.secureweb@gmail.com");
-	   $newPermission->setEmailAddress("chesedfundapi@gmail.com");
+	   	//$newPermission->setEmailAddress("geetanjali.secureweb@gmail.com");
+		$newPermission->setEmailAddress("chesedfundapi@gmail.com");
+		// $newPermission->setEmailAddress("tcfapi2@tcfapi.iam.gserviceaccount.com");
+		// $newPermission->setEmailAddress("secure@tcfapi.iam.gserviceaccount.com");
+		// $newPermission->setEmailAddress("swt.test2018@gmail.com");
 		$newPermission->setType('user');
+		// $newPermission->setRole('owner');
 		$newPermission->setRole('writer');
 		$optParams = array('sendNotificationEmail' => false);
 		$drive->permissions->create($ss->spreadsheetId,$newPermission,$optParams);
@@ -75,12 +86,18 @@ class GsheetController extends Controller
     }
     public function updateGSheet($spreadsheetId,$cause_id,$columns){
     
+    	// print_r($spreadsheetId);exit;
+
   	    $client = $this->getClient();
 		$service = new Google_Service_Sheets($client);
+
+
 		$drive = new Google_Service_Drive($client);
-		$getDonation = DB::table('donations')->select('*')->where('donations.cause_id',$cause_id)->get();
+
+
+		$getDonation = DB::table('donations')->select('*')->where('donations.cause_id',$cause_id)->where('sheet_updated',0)->get();
    
-       // echo "<pre>";print_r($getDonation);die('tts');
+      	// echo "<pre>";print_r($getDonation);die('tts');
 
 	   //  if (!empty($columns)) {
 	   //         foreach ( $columns as $value ) {
@@ -97,10 +114,31 @@ class GsheetController extends Controller
 			$i=2;
 	        foreach ($getDonation as $key => $donation) {
 	            if($donation->cause_id = $cause_id){
+
+	            	$donationObj = Donations::where('donation_id',$donation->donation_id)->where('cause_id',$cause_id)->first();
+
+	            	// print_r($donationObj->id);
+	            	// DB::table('donations')
+		            //     ->where('cause_id', $cause_id)
+		            //     ->update(['sheet_updated' => 1,'sheet_row' => $i]);
+
+	            	if(!$donationObj->sheet_row){
+	            		$donationObj->sheet_row = $i;
+	            		$donationObj->sheet_updated = 1;
+	            		$rowNo = $i;
+	            	}else{
+	            		$donationObj->sheet_updated = 1;
+
+	            		$rowNo = $donationObj->sheet_row;
+	            	}
+	            	$donationObj->save();
+
+
+
 	                $valueRange= new Google_Service_Sheets_ValueRange();
 	                $valueRange->setValues(["values" => ["{$donation->id}", "{$donation->subdomain}","{$donation->cause_name}","{$donation->cause_slug}","{$donation->cause_id}","{$donation->donation_id}","{$donation->donor_first_name}","{$donation->donor_last_name}","{$donation->donor_email}","{$donation->donor_phone}","{$donation->donor_street}","{$donation->donor_city}","{$donation->donor_state}","{$donation->donor_zip}","{$donation->status}","{$donation->captured}","{$donation->amount}","{$donation->currency}","{$donation->source}","{$donation->additional_info}","{$donation->converted_amount}","{$donation->converted_currency}","{$donation->fee}","{$donation->fee_currency}","{$donation->net}","{$donation->net_currency}"]]); // Add two values
 	                    $conf = ["valueInputOption" => "RAW"];
-	                    $service->spreadsheets_values->update($spreadsheetId,'A'.$i.':Z'.$i , $valueRange, $conf);
+	                    $service->spreadsheets_values->update($spreadsheetId,'A'.$rowNo.':Z'.$rowNo , $valueRange, $conf);
 	                    // $service->spreadsheets_values->update($spreadsheetId,'A1:Z1' , $valueRange, $conf);
 	            }
 	            $i++;
