@@ -102,12 +102,12 @@
                             class="c-sidebar-nav-link"
                             :text="__('Dashboard')" />
                     </li>
-                    <li class="c-sidebar-nav-item">
+                    <!-- <li class="c-sidebar-nav-item">
                         <x-utils.link
                             :href="route('log-viewer::logs.list')"
                             class="c-sidebar-nav-link"
                             :text="__('Logs')" />
-                    </li>
+                    </li> -->
                 </ul>
             </li>
         @endif
