@@ -82,6 +82,8 @@ class DonationsTable extends TableComponent
             Column::make(__('cause_slug'), 'cause_slug')->searchable()->sortable(),
             Column::make(__('cause_id'), 'cause_id')->exportOnly(),
             Column::make(__('created at (EST)'), 'created_at')->exportOnly(),
+            Column::make(__('donor_first_name'), 'donor_first_name')->searchable()->sortable(),
+            Column::make(__('donor_last_name'), 'donor_last_name')->searchable()->sortable(),
             Column::make(__('donor_name'), 'donor_full_name')->searchable()->sortable(),
             Column::make(__('donor_email'), 'donor_email')->searchable()->sortable(),
             Column::make(__('donor_phone'), 'donor_phone')->exportOnly(), 
