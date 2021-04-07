@@ -96,8 +96,10 @@ class GsheetController extends Controller
 
 
 		$getDonation = DB::table('donations')->select('*')->where('donations.cause_id',$cause_id)->where('sheet_updated',0)->get();
+
+		$LastDonation = DB::table('donations')->select('*')->where('donations.cause_id',$cause_id)->where('sheet_updated',1)->latest()->first();
    
-      	// echo "<pre>";print_r($getDonation);die('tts');
+      	// echo "<pre>";print_r($LastDonation);die('tts');
 
 	   //  if (!empty($columns)) {
 	   //         foreach ( $columns as $value ) {
@@ -111,9 +113,16 @@ class GsheetController extends Controller
 	  	// } 
 	
 		if(isset($getDonation) && !empty($getDonation)){
-			$i=2;
+
+			$i = 2;
+			if($LastDonation){
+				if($LastDonation->sheet_row){
+					$i=$LastDonation->sheet_row;
+				}
+			}
+			
 	        foreach ($getDonation as $key => $donation) {
-	            if($donation->cause_id = $cause_id){
+	            if($donation->cause_id == $cause_id){
 
 	            	$donationObj = Donations::where('donation_id',$donation->donation_id)->where('cause_id',$cause_id)->first();
 
@@ -124,7 +133,7 @@ class GsheetController extends Controller
 
 
 	            	if(!$donationObj->sheet_row){
-	            		$donationObj->sheet_row = $i;
+	            		$donationObj->sheet_row = $i+1;
 	            		$donationObj->sheet_updated = 1;
 	            		$rowNo = $i;
 	            	}else{
@@ -132,6 +141,11 @@ class GsheetController extends Controller
 
 	            		$rowNo = $donationObj->sheet_row;
 	            	}
+
+
+
+	            	// print_r($i);
+
 	            	$donationObj->save();
 
 
