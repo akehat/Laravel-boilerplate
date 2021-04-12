@@ -71,7 +71,7 @@ class DonationsController extends Controller
                 $campaigns->update($request->all()); // update campaign
 
 
-                $getDonations=Donations::where('donation_id', '=',$request->donation_id)->first();
+                $getDonations=Donations::where('donation_id', '=',$request->donation_id)->where('cause_id', '=', $request->cause_id)->first();
                 if ($getDonations === null) {
 
                     $donations = Donations::create($data);

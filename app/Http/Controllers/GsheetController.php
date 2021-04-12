@@ -76,7 +76,7 @@ class GsheetController extends Controller
 	    $update_Campaign =  DB::table('campaigns')->where('cause_id',$data['cause_id'])->update($savedata);
 	    $values   = [];
  		$values = [
-            ["ID","Sub Domain", "Cause name","Cause Slug", "Cause Id", "Donation Id","Donor First Name", "Donar Last Name", "Donor Email","Donor Phone", "Donor Street", "Donor City","Donor State", "Donor Zip", "Status","Captured", "Amount", "Currency","Source", "Additional Info", "Converted Amount", "Converted Currency", "Fee","Fee Currency", "Net", "Net Currency"]                     
+            ["ID", "Cause name","Cause Slug",  "Donation Id","Donor First Name", "Donar Last Name", "Donor Email","Donor Phone", "Donor Street", "Donor City","Donor State", "Donor Zip", "Status","Captured", "Amount", "Currency","Source", "Additional Info", "Converted Amount", "Converted Currency", "Fee","Fee Currency", "Net", "Net Currency","Affiliate","Created at"]                     
         ];
 
 	  
@@ -114,7 +114,7 @@ class GsheetController extends Controller
 	
 		if(isset($getDonation) && !empty($getDonation)){
 
-			$i = 2;
+			$i = 1;
 			if($LastDonation){
 				if($LastDonation->sheet_row){
 					$i=$LastDonation->sheet_row;
@@ -133,9 +133,10 @@ class GsheetController extends Controller
 
 
 	            	if(!$donationObj->sheet_row){
-	            		$donationObj->sheet_row = $i+1;
+	            		$i = $rowNo = $i+1;
+	            		$donationObj->sheet_row = $i;
 	            		$donationObj->sheet_updated = 1;
-	            		$rowNo = $i;
+	            		// $rowNo = $i;
 	            	}else{
 	            		$donationObj->sheet_updated = 1;
 
@@ -151,7 +152,7 @@ class GsheetController extends Controller
 
 
 	                $valueRange= new Google_Service_Sheets_ValueRange();
-	                $valueRange->setValues(["values" => ["{$donation->id}", "{$donation->subdomain}","{$donation->cause_name}","{$donation->cause_slug}","{$donation->cause_id}","{$donation->donation_id}","{$donation->donor_first_name}","{$donation->donor_last_name}","{$donation->donor_email}","{$donation->donor_phone}","{$donation->donor_street}","{$donation->donor_city}","{$donation->donor_state}","{$donation->donor_zip}","{$donation->status}","{$donation->captured}","{$donation->amount}","{$donation->currency}","{$donation->source}","{$donation->additional_info}","{$donation->converted_amount}","{$donation->converted_currency}","{$donation->fee}","{$donation->fee_currency}","{$donation->net}","{$donation->net_currency}"]]); // Add two values
+	                $valueRange->setValues(["values" => ["{$donation->id}","{$donation->cause_name}","{$donation->cause_slug}","{$donation->donation_id}","{$donation->donor_first_name}","{$donation->donor_last_name}","{$donation->donor_email}","{$donation->donor_phone}","{$donation->donor_street}","{$donation->donor_city}","{$donation->donor_state}","{$donation->donor_zip}","{$donation->status}","{$donation->captured}","{$donation->amount}","{$donation->currency}","{$donation->source}","{$donation->additional_info}","{$donation->converted_amount}","{$donation->converted_currency}","{$donation->fee}","{$donation->fee_currency}","{$donation->net}","{$donation->net_currency}","{$donation->affiliate}","{$donation->created_at}"]]); // Add two values
 	                    $conf = ["valueInputOption" => "RAW"];
 	                    $service->spreadsheets_values->update($spreadsheetId,'A'.$rowNo.':Z'.$rowNo , $valueRange, $conf);
 	                    // $service->spreadsheets_values->update($spreadsheetId,'A1:Z1' , $valueRange, $conf);
