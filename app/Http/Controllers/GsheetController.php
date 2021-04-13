@@ -13,6 +13,7 @@ use Google_Service_Sheets_Spreadsheet;
 use Google_Service_Sheets_ValueRange;
 use Google_Service_Sheets_ClearValuesRequest;
 use Google_Service_Drive_Permission;
+use Log;
 
 class GsheetController extends Controller
 {
@@ -98,7 +99,7 @@ class GsheetController extends Controller
 		$getDonation = DB::table('donations')->select('*')->where('donations.cause_id',$cause_id)->where('sheet_updated',0)->get();
 
 		$LastDonation = DB::table('donations')->select('*')->where('donations.cause_id',$cause_id)->where('sheet_updated',1)->latest()->first();
-   
+   		Log::channel('customlog')->info("LastDonation :".json_encode($LastDonation));
       	// echo "<pre>";print_r($LastDonation);die('tts');
 
 	   //  if (!empty($columns)) {
@@ -125,7 +126,7 @@ class GsheetController extends Controller
 	            if($donation->cause_id == $cause_id){
 
 	            	$donationObj = Donations::where('donation_id',$donation->donation_id)->where('cause_id',$cause_id)->first();
-
+	            	Log::channel('customlog')->info("donationObj :".json_encode($donationObj));
 	            	// print_r($donationObj->id);
 	            	// DB::table('donations')
 		            //     ->where('cause_id', $cause_id)
@@ -142,6 +143,9 @@ class GsheetController extends Controller
 
 	            		$rowNo = $donationObj->sheet_row;
 	            	}
+
+	            	Log::channel('customlog')->info("rowNo :".$rowNo);
+	            	Log::channel('customlog')->info(" ++++++++++++++++++++++++++++ ");
 
 
 

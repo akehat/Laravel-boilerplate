@@ -57,6 +57,8 @@ class DonationsController extends Controller
                 return response(['error' => $validator->errors(), 'Validation Error']);
             }
             $getCampaigns = Campaigns::where('cause_id', '=', $request->cause_id)->first();
+
+            Log::channel('customlog')->info("getCampaigns :".json_encode($getCampaigns));
             if ($getCampaigns === null) { // campaigns does not exist
                 $campaigns = Campaigns::create($data); //create campaign
                 $Donations = Donations::create($data); // create donations
@@ -72,6 +74,9 @@ class DonationsController extends Controller
 
 
                 $getDonations=Donations::where('donation_id', '=',$request->donation_id)->where('cause_id', '=', $request->cause_id)->first();
+
+                Log::channel('customlog')->info("getDonations :".json_encode($getDonations));
+
                 if ($getDonations === null) {
 
                     $donations = Donations::create($data);
@@ -82,6 +87,8 @@ class DonationsController extends Controller
                      // $request->put('sheet_updated', 0);
                     
                      $donations->update($request->all()); // update donations
+                     Log::channel('customlog')->info("donations update :".json_encode($donations));
+
                 }
                 $update_campaign_Tosheet =app('App\Http\Controllers\GsheetController')->updateGSheet($campaigns->google_sheet_id,$campaigns->cause_id,$columns);
                 return response()->json(['donations' => $donations, 'message' =>'Created successfully'], 201);
