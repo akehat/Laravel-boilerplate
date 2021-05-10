@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+          Commands\GsheetCreateUpdate :: class,
     ];
 
     /**
@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('activitylog:clean')->daily();
+         $schedule->command('Gsheet:update')->everyMinute();
     }
 
     /**
@@ -42,3 +43,7 @@ class Kernel extends ConsoleKernel
         require base_path('routes/console.php');
     }
 }
+
+// php artisan schedule:run
+// php artisan Gsheet:update
+// https://github.com/akehat/Kantor-API/

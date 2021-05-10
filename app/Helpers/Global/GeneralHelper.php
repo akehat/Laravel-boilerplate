@@ -10,7 +10,7 @@ if (! function_exists('appName')) {
      */
     function appName()
     {
-        return config('app.name', 'Laravel Boilerplate');
+        return config('app.name', 'TCF API');
     }
 }
 

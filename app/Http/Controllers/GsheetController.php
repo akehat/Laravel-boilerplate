@@ -83,13 +83,13 @@ class GsheetController extends Controller
 	  
 		$body   = new Google_Service_Sheets_ValueRange(['values' => $values]);        
         $result = $service->spreadsheets_values->update($ss->spreadsheetId, $get_range, $body, $params);
-        $this->updateGSheet($ss->spreadsheetId,$data['cause_id'],$columns);
+        //$this->updateGSheet($ss->spreadsheetId,$data['cause_id'],$columns);
     }
     public function updateGSheet($spreadsheetId,$cause_id,$columns){
     
     	// print_r($spreadsheetId);exit;
 
-  	    $client = $this->getClient();
+  	   /* $client = $this->getClient();
 		$service = new Google_Service_Sheets($client);
 
 
@@ -99,7 +99,7 @@ class GsheetController extends Controller
 		$getDonation = DB::table('donations')->select('*')->where('donations.cause_id',$cause_id)->where('sheet_updated',0)->get();
 
 		$LastDonation = DB::table('donations')->select('*')->where('donations.cause_id',$cause_id)->where('sheet_updated',1)->latest()->first();
-   		Log::channel('customlog')->info("LastDonation :".json_encode($LastDonation));
+   		Log::channel('customlog')->info("LastDonation :".json_encode($LastDonation));*/
       	// echo "<pre>";print_r($LastDonation);die('tts');
 
 	   //  if (!empty($columns)) {
@@ -113,7 +113,7 @@ class GsheetController extends Controller
 	   //         }
 	  	// } 
 	
-		if(isset($getDonation) && !empty($getDonation)){
+		/*if(isset($getDonation) && !empty($getDonation)){
 
 			$i = 1;
 			if($LastDonation){
@@ -164,9 +164,7 @@ class GsheetController extends Controller
 	            $i++;
 	        }
 	    }
- 
-	    
- 		
+ 		*/
 
 	}
 	

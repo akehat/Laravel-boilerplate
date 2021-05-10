@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel Boilerplate'),
+    'name' => env('APP_NAME', 'TCF API'),
 
     /*
     |--------------------------------------------------------------------------

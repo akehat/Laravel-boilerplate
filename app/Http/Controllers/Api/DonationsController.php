@@ -46,7 +46,25 @@ class DonationsController extends Controller
 
             Log::channel('customlog')->info(json_encode($data));
 
-            $data['donor_full_name'] = $request->donor_first_name.' '.$request->donor_last_name;
+	    $data['donor_full_name'] = $request->donor_first_name.' '.$request->donor_last_name;
+
+		    
+	    if ($request->captured == 'true') $request->captured = 1;
+	    if ($request->captured == 'false') $request->captured = 0;
+	    if ($data['captured'] == 'true') $data['captured'] = 1;
+	    if ($data['captured'] == 'false') $data['captured'] = 0;
+
+
+        if ($request->captured == 'true') $request->merge([ 'captured' => 1 ]);
+        if ($request->captured == 'false') $request->merge([ 'captured' => 0 ]);
+        
+        // $request->merge([ 'accessMode' => 'edit' ]);
+
+        Log::channel('capture')->info("Capture  1 :".json_encode($request->all()));
+        Log::channel('customlog')->info("Capture 1 :".$request->captured.json_encode($request->all()));
+        Log::channel('capture')->info("Capture 2 :".$request->captured.json_encode($data));
+        Log::channel('customlog')->info("Capture 2 :".json_encode($data));
+
             $validator = Validator::make($data, [
                 'subdomain' => 'required|max:255',
                 'cause_id' => 'required|max:255',
@@ -70,7 +88,7 @@ class DonationsController extends Controller
             
             }else{  // campaigns exist
                 $campaigns = Campaigns::find($getCampaigns->id);
-                $campaigns->update($request->all()); // update campaign
+                $campaigns->update($data); // update campaign
 
 
                 $getDonations=Donations::where('donation_id', '=',$request->donation_id)->where('cause_id', '=', $request->cause_id)->first();
@@ -87,6 +105,7 @@ class DonationsController extends Controller
                      // $request->put('sheet_updated', 0);
                     
                      $donations->update($request->all()); // update donations
+                     // $donations->update($data); // update donations
                      Log::channel('customlog')->info("donations update :".json_encode($donations));
 
                 }
